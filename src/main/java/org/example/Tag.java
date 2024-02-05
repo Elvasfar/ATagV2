@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Objects;
 
 
-public abstract class Tag {
+public abstract class Tag implements Comparable<Tag> {
 
     private static int nextId = 0;
 
@@ -20,6 +20,11 @@ public abstract class Tag {
     public Tag() {
         id = "" + Tag.nextId++;
         children = new ArrayList<>();
+    }
+
+    @Override
+    public int compareTo(Tag o) {
+        return this.getId().compareTo(o.getId());
     }
 
     public String getColor() {

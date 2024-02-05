@@ -10,8 +10,20 @@ public class Main {
         System.out.println("pabe".compareTo("hej"));
         System.out.println("abe".compareTo("abe"));
 
+        List<Tag> tags = new ArrayList<>();
+        long start = System.currentTimeMillis();
+        for (int i=1; i<=4; i++) {
+            HTag hTag = new HTag(1, "Hej" + i);
+            hTag.setId(hTag.getText());
+            tags.add(hTag);
+            PTag pTag = new PTag("Hejx"+i);
+            pTag.setId(pTag.getText());
+            tags.add(pTag);
+        }
 
-
+        System.out.println(tags);
+        Collections.sort(tags);
+        System.out.println(tags);
 
 
     }
