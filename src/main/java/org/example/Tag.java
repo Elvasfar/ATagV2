@@ -8,6 +8,8 @@ import java.util.List;
 
 public abstract class Tag {
 
+    private static int nextId = 0;
+
     private String id;
     private String tagName;
     private String text;
@@ -15,6 +17,7 @@ public abstract class Tag {
     private String color = ""; //#ff0000 = red
 
     public Tag() {
+        id = "" + Tag.nextId++;
         children = new ArrayList<>();
     }
 
@@ -22,23 +25,21 @@ public abstract class Tag {
         return color;
     }
 
-    public void setColor(int red, int green, int blue) {
+    public void setColorWrong(int red, int green, int blue) {
         String re = Integer.toHexString(red);
         String gree = Integer.toHexString(green);
         String blu = Integer.toHexString(blue);
         this.setColor("#" + re + gree + blu);
     }
 
-    public static String rgbToColorString(int red, int green, int blue) {
+    public void setColor(int red, int green, int blue) {
         // Ensure that the color components are within the valid range (0-255)
         red = Math.min(255, Math.max(0, red));
         green = Math.min(255, Math.max(0, green));
         blue = Math.min(255, Math.max(0, blue));
 
         // Convert the RGB values to a color string in hexadecimal format
-        String colorString = String.format("#%02X%02X%02X", red, green, blue);
-
-        return colorString;
+        color = String.format("#%02X%02X%02X", red, green, blue);
     }
 
 
@@ -93,6 +94,9 @@ public abstract class Tag {
         return s1;
     }
 
+    public boolean hasLineShift() {
+        return true;
+    }
 
     public String toHtmlString() {
         String s1 = "";
@@ -103,7 +107,11 @@ public abstract class Tag {
         }
         for (Tag tag: children) {
             String child = tag.toHtmlString();
-            s1 = s1 + (char) 10 + child;
+            if (this.hasLineShift()) {
+                s1 = s1 + (char) 10 + child;
+            } else {
+                s1 = s1 + child;
+            }
         }
         s1 = s1 + text + "</" + tagName + ">";
         return s1;
